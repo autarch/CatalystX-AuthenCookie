@@ -4,7 +4,6 @@ use Moose::Role;
 
 # No doubt SHA-512 is way overkill but it can't hurt (I hope).
 use Digest::SHA qw( sha512_base64 );
-use MRO::Compat;
 use MooseX::Params::Validate qw( validated_list );
 
 # We really want to modify setup, but until Catalyst stops support old style
