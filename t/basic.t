@@ -38,7 +38,7 @@ use HTTP::Date qw( str2time time2str );
     );
 
     # Setting COOKIE in the ENV hash works for Cat 5.8, the extra parameter to
-    # get should work for 5.9+
+    # get works for 5.9+
     my $cookie_header = $res->header('Set-Cookie');
     $ENV{COOKIE} = $cookie_header;
 
