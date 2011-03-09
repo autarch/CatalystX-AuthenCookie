@@ -37,16 +37,23 @@ use HTTP::Date qw( str2time time2str );
         'no user id without a cookie'
     );
 
-    local $ENV{COOKIE} = $res->header('Set-Cookie');
+    # Setting COOKIE in the ENV hash works for Cat 5.8, the extra parameter to
+    # get should work for 5.9+
+    my $cookie_header = $res->header('Set-Cookie');
+    $ENV{COOKIE} = $cookie_header;
+
     is(
-        get('/user_id'), 42,
+        get( '/user_id', { extra_env => { 'COOKIE' => $cookie_header } } ),
+        42,
         'user_id is 42 with cookie'
     );
 
-    $ENV{COOKIE} =~ s/MAC&./MAC&!/;
+    $cookie_header =~ s/MAC&./MAC&!/;
+    $ENV{COOKIE} = $cookie_header;
 
     is(
-        get('/user_id'), 'none',
+        get( '/user_id', { extra_env => { 'COOKIE' => $cookie_header } } ),
+        'none',
         'no user_id when cookie has bad MAC'
     );
 }
